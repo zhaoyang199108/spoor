@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzk.dao.UserDao">
+	<select id="findUserByUserName" resultType="SpoorUser" parameterType="String">
+		SELECT
+		t.user_id,
+		t.user_phone,
+		t.password,
+		t.create_time,
+		t.home_icon,
+		t.user_icon,
+		t.nick_name,
+		t.user_gender,
+		t.blood_type,
+		t.user_birthday,
+		t.user_age,
+		t.user_wx,
+		t.user_qq,
+		t.user_mail,
+		t.user_tag_one,
+		t.user_tag_two,
+		t.user_tag_three,
+		t.is_setting,
+		t.user_points
+		FROM `spoor_user` t
+		where t.user_phone=#{userName};
+	</select>
+	<select id="findUserByUserId" resultType="SpoorUser" parameterType="Long">
+		SELECT
+		t.user_id,
+		t.user_phone,
+		t.password,
+		t.create_time,
+		t.home_icon,
+		t.user_icon,
+		t.nick_name,
+		t.user_gender,
+		t.blood_type,
+		t.user_birthday,
+		t.user_age,
+		t.user_wx,
+		t.user_qq,
+		t.user_mail,
+		t.user_tag_one,
+		t.user_tag_two,
+		t.user_tag_three,
+		t.is_setting,
+		t.user_points
+		FROM `spoor_user` t
+		where t.user_id=#{userId};
+	</select>
+	<insert id="insertUser" parameterType="com.yzk.entity.SpoorUser">
+		insert into spoor_user(user_phone,password)
+		values(#{userPhone},#{password});
+	</insert>
+	<update id="updateUserSetUserPicture" parameterType = "String">
+	update 
+	spoor_user t
+	set t.user_icon = #{picture}
+	where 
+	 t.user_phone=#{mobile};
+	</update> 
+	<update id="modifyPassword" parameterType = "String">
+	update
+	spoor_user t
+	set t.password=#{nPsw}
+	where 
+	t.user_phone=#{mobile}
+	</update> 
+	<update id="updateUser" parameterType="com.yzk.entity.SpoorUser">
+	update
+	spoor_user t
+	set
+	t.nick_name = #{nickName},
+	t.user_gender = #{userGender},
+	t.blood_type =#{bloodType},
+	t.user_birthday = #{userBirthday},
+	t.user_icon = #{userIcon}
+	t.user_age = #{userAge},
+	t.user_wx =#{userWx},
+	t.user_qq = #{userQq},
+	t.user_mail = #{userMail}
+	where
+	t.user_phone=#{userPhone}
+	</update>
+	<update id="modifyMobile" parameterType="String">
+	update 
+	spoor_user t
+	set
+	t.user_phone = #{mobile}
+	where
+	t.user_phone = #{oMobile}
+	</update>
+	<update id="forgetPassword" parameterType="String">
+	update 
+	spoor_user t
+	set
+	t.password = #{nPsw}
+	where
+	t.user_phone = #{mobile}
+	</update>
+	<update id="setTags" parameterType="String">
+	update 
+	spoor_user t
+	set
+	t.user_tag_one = #{tagOne},
+	t.user_tag_two = #{tagTwo},
+	t.user_tag_three = #{tagThree},
+	t.is_setting = #{setting}
+	where
+	t.user_phone = #{mobile}
+	</update> 
+
+	<update id="closeSetting" parameterType="String">
+	update 
+	spoor_user t
+	set
+	t.is_setting = #{setting}
+	where
+	t.user_phone = #{mobile}
+	</update> 
+	<update id="modifyUserIcon" parameterType="com.yzk.entity.SpoorUser">
+	update 
+	spoor_user t
+	set
+	t.user_icon = #{userIcon}
+	where
+	t.user_phone = #{userPhone}
+	</update>
+	<update id="modifyUserGender" parameterType="com.yzk.entity.SpoorUser">
+	update 
+	spoor_user t
+	set
+	t.user_gender = #{userGender}
+	where
+	t.user_phone = #{userPhone}
+	</update>
+	<update id="modifyUserNickName" parameterType="com.yzk.entity.SpoorUser">
+	update 
+	spoor_user t
+	set
+	t.nick_name = #{nickName}
+	where
+	t.user_phone = #{userPhone}
+	</update>
+	<update id="modifyUserBirthday" parameterType="com.yzk.entity.SpoorUser">
+	update 
+	spoor_user t
+	set
+	t.user_birthday = #{userBirthday}
+	where
+	t.user_phone = #{userPhone}
+	</update>
+</mapper>

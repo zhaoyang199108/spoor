@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd
+ http://www.springframework.org/schema/tx
+ http://www.springframework.org/schema/tx/spring-tx.xsd
+ http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc.xsd
+ ">
+	<!-- 配置springMVC -->
+	<!-- 1:开启springmvc注解模式 -->
+	<!-- 简化配置 (1)自动注册DefaultAnnotationHandlerMapping,AnnotationMethodHandlerAdapter 
+		(2)提供一系列：数据绑定，数字跟日期的format @NumberFormat,@DataTimeFormat, xml,json默认读写的支持。 -->
+	<mvc:annotation-driven />
+	<!-- servlet-mapping 映射路径： "/" -->
+	<!-- 2：静态资源默认servlet配置 1:加入对静态资源的处理：js,jpg,png 2:允许使用"/"做整体映射 -->
+	<mvc:default-servlet-handler />
+		<!-- 设置multipartResolver才能完成文件上传 -->
+<!-- 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="2024000000"></beans:property>
+	</beans:bean> -->
+	<bean id="multipartResolver"  
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <!-- set the max upload size100MB -->  
+        <property name="maxUploadSize">  
+            <value>104857600</value>  
+        </property>  
+        <property name="maxInMemorySize">  
+            <value>4096</value>  
+        </property>  
+    </bean> 
+	
+	<!-- 3：配置jsp 显示ViewResolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView"></property>
+		<!--<property name="prefix" value="/view/"></property>-->
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<!-- 4:扫描web相关的bean -->
+	<context:component-scan base-package="com.yzk.controller" />
+
+</beans>

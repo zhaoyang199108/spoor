@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzk.dao.SpoorUnreadDao">
+	<insert id="insertIntoSpoorUnread" parameterType="com.yzk.entity.SpoorUnread">
+	insert into spoor_unread(user_id,comment_id)
+	values(#{userId},#{commentId})
+	</insert>
+	<delete id="deleteSpoorUnreadByUserId">
+	delete 
+	from 
+	spoor_unread
+	where 
+	user_id = #{userId}
+	</delete>
+	<select id="selectCountUnreadByUserId" resultType="int" > 
+	select  
+	count(*)
+	from 
+	spoor_unread
+	where
+	user_id = #{userId}
+	</select>
+	<select id="selectSpoorUnreadByUserId" resultType="com.yzk.entity.SpoorUnread">
+	select
+	t.id,
+	t.create_time,
+	t.user_id,
+	t.comment_id
+	from 
+	spoor_unread t
+	where 
+	t.user_id =#{userId}
+	order by create_time desc;
+	</select>
+	<delete id="deleteSpoorUnreadById">
+	delete 
+	from 
+	spoor_unread
+	where 
+	id = #{id};
+	</delete>
+	<delete id="deleteSpoorUnreadByCommentId">
+	delete 
+	from 
+	spoor_unread
+	where 
+	comment_id = #{commentId};
+	</delete>
+</mapper>

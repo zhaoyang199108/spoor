@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzk.dao.SpoorCommentDao">
+	<select id="findSpoorCommentCounts" resultType="int">
+	select
+	count(*)
+	from
+	spoor_comment t
+	where 
+	t.spoor_id = #{spoorId}
+	</select>
+	<insert id="addComment" parameterType="com.yzk.entity.SpoorComment">
+	insert into spoor_comment(user_id,spoor_id,user_comment,parent_id)
+	values(#{userId},#{spoorId},#{userComment},#{parentId});
+	</insert>
+	<select id="findRootCommentList" resultType="com.yzk.entity.SpoorComment">
+	select
+	t.id,
+	t.create_time,
+	t.user_id,
+	t.spoor_id,
+	t.user_comment,
+	t.parent_id
+	from 
+	spoor_comment t
+	where 
+	t.spoor_id = #{spoorId}
+	and
+	t.parent_id = "0"
+	order by create_time desc;
+	</select>
+	<select id="findCommentList" resultType="com.yzk.entity.SpoorComment">
+	select
+	t.id,
+	t.create_time,
+	t.user_id,
+	t.spoor_id,
+	t.user_comment,
+	t.parent_id
+	from 
+	spoor_comment t
+	where 
+	t.parent_id = #{parentId}
+	order by create_time desc;
+	</select>
+	<select id="findSpoorCommentById" resultType="com.yzk.entity.SpoorComment">
+	select
+	t.id,
+	t.create_time,
+	t.user_id,
+	t.spoor_id,
+	t.user_comment,
+	t.parent_id
+	from 
+	spoor_comment t
+	where 
+	t.id = #{id}
+	</select>
+	<select id="findMyCommentList" resultType="long">
+	SELECT t.spoor_id FROM `spoor_comment` t where  t.user_id = #{userId} GROUP BY spoor_id;
+	</select>
+	<select id="findNoticeByUser" resultType="long">
+	select * from  (
+	SELECT r.spoor_id   FROM `spoor_benefit` r where r.user_id  = #{userId}
+	UNION
+	ALL
+	select e.spoor_id from spoor_spoor e where e.user_id = #{userId}
+	 ) a GROUP BY spoor_id;
+	</select>
+	<delete id="deleteCommentBySpoorId" >
+	delete 
+	from  
+	spoor_comment
+	where 
+	spoor_id = #{spoorId};
+	</delete>
+	<select id="selectCountUnRead"  resultType="int">
+	select
+	count(id)
+	from
+	spoor_comment t
+	where 
+	t.user_id=#{userId}
+	and
+	t.is_read = '1';
+	</select>
+	<select id="findCommentIdByUserId"  resultType="com.yzk.entity.SpoorComment">
+	select 
+	t.id,
+	t.create_time,
+	t.user_id,
+	t.spoor_id,
+	t.user_comment,
+	t.parent_id
+	from 
+	spoor_comment t
+	where
+	t.user_id=#{userId}
+	order
+	by 
+	create_time desc
+	LIMIT 1;
+	</select>
+	<select id="findCommentByCommentId" resultType="com.yzk.entity.SpoorComment">
+	select 
+	t.id,
+	t.create_time,
+	t.user_id,
+	t.spoor_id,
+	t.user_comment,
+	t.parent_id
+	from 
+	spoor_comment t
+	where
+	t.id=#{commentId};
+	</select>
+	<select id="findCommentBySpoorId" resultType="com.yzk.entity.SpoorComment">
+	select 
+	t.id,
+	t.create_time,
+	t.user_id,
+	t.spoor_id,
+	t.user_comment,
+	t.parent_id
+	from 
+	spoor_comment t
+	where
+	t.spoor_id=#{spoorId};
+	</select>
+</mapper>

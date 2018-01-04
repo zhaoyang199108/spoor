@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzk.dao.SpoorDao">
+	<insert id="insertSpoor"  parameterType="com.yzk.entity.SpoorSpoor"  >
+	   insert  into spoor_spoor(spoor_content,spoor_tag_one,spoor_tag_two,spoor_tag_three,user_id)
+	   values(#{spoorContent},#{spoorTagOne},#{spoorTagTwo},#{spoorTagThree},#{userId})
+	</insert>
+	<select id="findSpoorBySpoorId" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	where
+	t.spoor_id = #{spoorId};
+	</select>
+	<select id="findSpoorByTime" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	ORDER BY create_time desc
+	limit 1;
+	</select>
+	<select id="findAll" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	ORDER BY create_time desc
+	</select>
+	<select id="findSpoorByMobile" parameterType="Long" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	where 
+	t.user_id = #{mobile}
+	ORDER BY create_time desc
+	</select>
+	<select id="findTagOne" parameterType="String" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	where 
+	t.spoor_tag_one like concat(concat('%',#{tagOne}),'%') 
+	ORDER BY create_time desc
+	</select>
+	<select id="findTagTwo" parameterType="String" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	where 
+	t.spoor_tag_two like concat(concat('%',#{tagTwo}),'%') 
+	ORDER BY create_time desc
+	</select>
+	<select id="findTagThree" parameterType="String" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	where 
+	t.spoor_tag_three like concat(concat('%',#{tagThree}),'%')  
+	ORDER BY create_time desc
+	</select>
+	<select id="findAllByTags" parameterType="String" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	where 
+	<choose>
+	<when test="tagThree != null and tagThree != ''">
+	t.spoor_tag_one like concat(concat('%',#{tagOne}),'%') 
+	or
+	t.spoor_tag_two like concat(concat('%',#{tagOne}),'%') 
+	or
+	t.spoor_tag_three like concat(concat('%',#{tagOne}),'%') 
+	or
+	t.spoor_tag_one like concat(concat('%',#{tagTwo}),'%') 
+	or
+	t.spoor_tag_two like concat(concat('%',#{tagTwo}),'%') 
+	or
+	t.spoor_tag_three like concat(concat('%',#{tagTwo}),'%') 
+	or
+	t.spoor_tag_one like concat(concat('%',#{tagThree}),'%') 
+	or
+	t.spoor_tag_two like concat(concat('%',#{tagThree}),'%') 
+	or
+	t.spoor_tag_three like concat(concat('%',#{tagThree}),'%') 
+	</when>
+	<otherwise>
+		<choose>
+		<when test="tagTwo != null and tagTwo != ''">
+		t.spoor_tag_one like concat(concat('%',#{tagOne}),'%') 
+		or
+		t.spoor_tag_two like concat(concat('%',#{tagOne}),'%') 
+		or
+		t.spoor_tag_three like concat(concat('%',#{tagOne}),'%') 
+		or
+		t.spoor_tag_one like concat(concat('%',#{tagTwo}),'%') 
+		or
+		t.spoor_tag_two like concat(concat('%',#{tagTwo}),'%') 
+		or
+		t.spoor_tag_three like concat(concat('%',#{tagTwo}),'%') 
+		</when>
+		<otherwise>
+		t.spoor_tag_one like concat(concat('%',#{tagOne}),'%') 
+		or
+		t.spoor_tag_two like concat(concat('%',#{tagOne}),'%') 
+		or
+		t.spoor_tag_three like concat(concat('%',#{tagOne}),'%') 
+		</otherwise>
+		</choose>
+	</otherwise>
+	</choose>
+	ORDER BY create_time desc
+	</select>
+	<select id="findById" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	where 
+	t.spoor_id = #{spoorId}
+	ORDER BY create_time desc
+	</select>
+	<select id="findByTag" resultType="com.yzk.entity.SpoorSpoor">
+	select 
+	t.spoor_id,
+	t.create_time,
+	t.spoor_content,
+	t.spoor_tag_one,
+	t.spoor_tag_two,
+	t.spoor_tag_three,
+	t.user_id
+	from 
+	spoor_spoor t
+	where 
+	t.spoor_tag_one like concat(concat('%',#{tag}),'%')  
+	or 
+	t.spoor_tag_two like concat(concat('%',#{tag}),'%')  
+	or
+	t.spoor_tag_three like concat(concat('%',#{tag}),'%')  
+	ORDER BY create_time desc
+	</select>
+	<delete id="deleteSpoorId" >
+	delete
+	from
+	spoor_spoor
+	where 
+	spoor_id = #{spoorId}
+	</delete>
+</mapper>

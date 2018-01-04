@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzk.dao.SpoorCollectDao">
+	<insert id="spoorCollect" parameterType="com.yzk.entity.SpoorCollect">
+		insert into spoor_collect(collect,spoor_id,user_id)
+	    values(#{collect},#{spoorId},#{userId});
+	</insert>
+	<select id="findCollectByMobile" resultType="com.yzk.entity.SpoorCollect">
+	select 
+	t.id,
+	t.create_time,
+	t.collect,
+	t.spoor_id,
+	t.user_id
+	from 
+	spoor_collect t
+	where 
+	t.user_id = #{userId}
+	and
+	t.collect = '1'
+	order by create_time desc
+	LIMIT #{currentPage},#{pageSize}
+	</select>
+	<delete id="deleteCollect" parameterType="Long">
+	delete
+	from 
+	spoor_collect 
+	where 
+	user_id = #{userId}
+	and
+	spoor_id = #{spoorId}
+	and
+	collect = '1'
+	</delete>
+	
+	<select id="findCollectByUserIdAndSpoorId" resultType="int">
+	select 
+	count(*)
+	from 
+	spoor_collect t
+	where 
+	t.user_id = #{userId}
+	and
+	t.spoor_id = #{spoorId}
+	</select>
+	
+	<delete id="deleteCollectBySpoorId">
+	delete
+	from 
+	spoor_collect 
+	where 
+	spoor_id = #{spoorId}
+	
+	</delete>
+</mapper>

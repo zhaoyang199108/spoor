@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzk.dao.PictureDao">
+	<insert id="insertPicture"  parameterType="com.yzk.entity.SpoorPicture">
+	   insert  into spoor_picture(spoor_id,picture_url)
+	   values(#{spoorId},#{pictureUrl})
+	</insert>
+	<select id="findPicBySpoorId" parameterType="Long" resultType="com.yzk.entity.SpoorPicture">
+	select
+	t.picture_id,
+	t.create_time,
+	t.spoor_id,
+	t.picture_url
+	from
+	spoor_picture t
+	where
+	t.spoor_id = #{id};
+	</select>
+	<delete id="deletePictureBySpoorId">
+	delete
+	from 
+	spoor_picture
+	where
+	spoor_id = #{spoorId};
+	</delete>
+</mapper>

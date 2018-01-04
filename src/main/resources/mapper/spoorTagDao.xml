@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzk.dao.SpoorTagDao">
+	<insert id="insertTag" parameterType="com.yzk.entity.SpoorTag">
+	insert into spoor_tag(context)
+	values(#{context});
+	</insert>
+	<update id="updateTime"  parameterType="com.yzk.entity.SpoorTag">
+	update
+	spoor_tag t
+	set
+	t.time = #{time}
+	where
+	t.context = #{context}
+	</update>
+	<select id="findHotTag" resultType="com.yzk.entity.SpoorTag">
+	select 
+	t.id,
+	t.create_time,
+	t.context,
+	t.time,
+	t.is_recommend
+	from
+	spoor_tag t
+	order by time desc
+	LIMIT #{hotRange};
+	</select>
+	<select id="findNewTag"   resultType="com.yzk.entity.SpoorTag">
+	select 
+	t.id,
+	t.create_time,
+	t.context,
+	t.time,
+	t.is_recommend
+	from
+	spoor_tag t
+	order by create_time desc
+	LIMIT #{newRange};
+	</select>
+	<select id="findRepeat"  parameterType="com.yzk.entity.SpoorTag" resultType="com.yzk.entity.SpoorTag">
+	select 
+	t.id,
+	t.create_time,
+	t.context,
+	t.time,
+	t.is_recommend
+	from
+	spoor_tag t
+	where 
+	t.context = #{context};
+	</select>
+</mapper>

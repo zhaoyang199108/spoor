@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzk.dao.SpoorBenefitDao">
+	<insert id="spoorBenefit" parameterType="com.yzk.entity.SpoorBenefit">
+		insert into spoor_benefit(user_benefit,spoor_id,user_id)
+	    values(#{userBenefit},#{spoorId},#{userId});
+	</insert>
+	<select id="findBenefitByMobile" resultType="com.yzk.entity.SpoorBenefit">
+	select 
+	t.benefit_id,
+	t.create_time,
+	t.user_benefit,
+	t.spoor_id,
+	t.user_id
+	from 
+	spoor_benefit t
+	where 
+	t.user_id = #{userId}
+	and
+	t.user_benefit = '1'
+	order by create_time desc
+	LIMIT #{currentPage},#{pageSize}
+	</select>
+	<delete id="deleteBenefit" parameterType="Long">
+	delete
+	from 
+	spoor_benefit 
+	where 
+	user_id = #{userId}
+	and
+	spoor_id = #{spoorId}
+	and
+	user_benefit = '1'
+	</delete>
+	
+	<select id="findBenefitByUserIdAndSpoorId" resultType="com.yzk.entity.SpoorBenefit">
+	select 
+	t.benefit_id,
+	t.create_time,
+	t.user_benefit,
+	t.spoor_id,
+	t.user_id
+	from 
+	spoor_benefit t
+	where 
+	t.user_id = #{userId}
+	and
+	t.spoor_id = #{spoorId}
+	and
+	t.user_benefit = '1'
+	</select>
+	<select id="findAllBenefits" resultType="int" >
+	select 
+	count(*)
+	from 
+	spoor_benefit t
+	where 
+	t.spoor_id = #{spoorId}
+	</select>
+    <delete id="deleteBenefitBySpoorId">
+    delete 
+    from 
+    spoor_benefit
+    where
+    spoor_id = #{spoorId};
+    </delete>
+</mapper>
